@@ -8,6 +8,12 @@
 {% if copies and copies > 0 %}{{ name }}-{{ index }}{% else %}{{ name }}{% endif %}
 {%- endmacro -%}
 
-{%- macro lookup(name) -%}
-{{ self._TemplateReference__context.resolve(name) }}
+
+{%- macro lookup(name, default_value="Bob") -%}
+{{ self._TemplateReference__context.resolve(name) | default(default_value) }}
+{%- endmacro -%}
+
+
+{%- macro lookup2(name, default_value="Bob") -%}
+{{ self._TemplateReference__context.resolve(name)}}, {{default_value}}
 {%- endmacro -%}

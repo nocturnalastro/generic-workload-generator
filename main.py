@@ -2,7 +2,6 @@ import yaml # might be better to use ruamel in the future
 import argparse
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
-from io import StringIO
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-d", "--debug", action="store_true", default=False)
@@ -31,7 +30,10 @@ env.filters["to_yaml"] = to_yaml
 
 
 if __DEBUG:
+    print(" Templates ".center(30, "*"))
     print(env.list_templates())
+    print("*"*30)
+
 
 
 results = []
@@ -40,8 +42,15 @@ with args.input.open() as f:
         for m in manifest:
             copies = m.get("copies")
             for i in range(0, copies or 1):
+                res = env.get_template(f"{m['template']}.yaml.j2").render(index=i, **m)
+
+                if __DEBUG:
+                    print(" Raw result ".center(30, "#"))
+                    print(res)
+                    print("#"*30)
+
                 results.append(
-                    to_yaml(from_yaml(env.get_template(f"{m['template']}.yaml.j2").render(index=i, **m)), 2)
+                    to_yaml(from_yaml(res), 2)
                 )
 
 output_list = []

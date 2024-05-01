@@ -27,21 +27,21 @@
     imagePullPolicy: IfNotPresent
     livenessProbe:
         exec:
-        command:
-            - ls
+            command:
+                - ls
         failureThreshold: 3
         initialDelaySeconds: 30
         periodSeconds: 10
         successThreshold: 1
         timeoutSeconds: 1
-    name: {{ container_name }}
+    name: {{ container_name | default("sleeper")}}
     resources:
         limits:
-            cpu: {{ limit_cpu_count }}
-            memory: {{ limit_memory }}
+            cpu: {{ limit_cpu_count | default("2") }}
+            memory: {{ limit_memory | default("512Mi") }}
         requests:
-            cpu: {{ requested_cpu_count }}
-            memory: {{ requested_memory }}
+            cpu: {{ requested_cpu_count | default("2") }}
+            memory: {{ requested_memory | default("512Mi") }}
     securityContext:
         allowPrivilegeEscalation: false
         capabilities:
