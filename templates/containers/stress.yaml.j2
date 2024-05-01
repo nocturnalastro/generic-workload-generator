@@ -21,20 +21,20 @@
         fieldRef:
             apiVersion: v1
             fieldPath: spec.nodeName
-    image: registry.redhat.io/ubi8/ubi
-    command: ["/bin/sh"]
-    args: ["-c", "while true; do sleep 10;done"]
+    {% if cpu_stress %}
+    -   name: "stress_cpu"
+        value: {{ cpu_stress }}
+    {% endif -%}
+    {% if mem_stress %}
+    -   name: "stress_vm-bytes"
+        value: {{ mem_stress }}
+    {% endif -%}
+    image: "ghcr.io/abraham2512/fedora-stress-ng:master"
     imagePullPolicy: IfNotPresent
     livenessProbe:
-        exec:
-        command:
-            - ls
-        failureThreshold: 3
-        initialDelaySeconds: 30
-        periodSeconds: 10
-        successThreshold: 1
-        timeoutSeconds: 1
-    name: {{ container_name }}
+        httpGet:
+            path: "/healthz"
+            port: 8080
     resources:
         limits:
             cpu: {{ limit_cpu_count }}
