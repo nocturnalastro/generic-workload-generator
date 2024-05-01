@@ -1,4 +1,4 @@
-import yaml # might be better to use ruamel in the future
+import yaml  # might be better to use ruamel in the future
 import argparse
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
@@ -20,21 +20,25 @@ args = parser.parse_args()
 __DEBUG = args.debug
 
 env = Environment(loader=FileSystemLoader(args.templates), keep_trailing_newline=False)
+
+
 def from_yaml(input, indent=2):
     return yaml.load(input, Loader=yaml.SafeLoader)
+
+
 env.filters["from_yaml"] = from_yaml
+
 
 def to_yaml(input, indent=2):
     return yaml.dump(input, indent=indent, Dumper=yaml.SafeDumper)
-env.filters["to_yaml"] = to_yaml
 
+
+env.filters["to_yaml"] = to_yaml
 
 if __DEBUG:
     print(" Templates ".center(30, "*"))
     print(env.list_templates())
-    print("*"*30)
-
-
+    print("*" * 30)
 
 results = []
 with args.input.open() as f:
@@ -47,11 +51,9 @@ with args.input.open() as f:
                 if __DEBUG:
                     print(" Raw result ".center(30, "#"))
                     print(res)
-                    print("#"*30)
+                    print("#" * 30)
 
-                results.append(
-                    to_yaml(from_yaml(res), 2)
-                )
+                results.append(to_yaml(from_yaml(res), 2))
 
 output_list = []
 for r in results:
