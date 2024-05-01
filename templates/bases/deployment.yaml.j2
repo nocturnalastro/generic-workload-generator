@@ -3,9 +3,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ get_copies_name(deployment_app) }}-deployment
+  name: {{ get_copies_name(app) }}-deployment
   labels:
-    app: {{ deployment_app }}
+    app: {{ app }}
     {% if (labels | default({}) | length) > 0 %}
     {{ labels | to_yaml }}
     {% endif %}
@@ -13,11 +13,11 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: {{ deployment_app }}
+      app: {{ app }}
   template:
     metadata:
       labels:
-        app: {{ deployment_app }}
+        app: {{ app }}
     spec:
       containers:
         {%- block containers %}

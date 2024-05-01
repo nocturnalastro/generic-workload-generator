@@ -3,24 +3,24 @@
         value: UTC
     -   name: POD_NAME
         valueFrom:
-        fieldRef:
-            apiVersion: v1
-            fieldPath: metadata.name
+            fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
     -   name: NAMESPACE
         valueFrom:
-        fieldRef:
-            apiVersion: v1
-            fieldPath: metadata.namespace
+            fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
     -   name: POD_UID
         valueFrom:
-        fieldRef:
-            apiVersion: v1
-            fieldPath: metadata.uid
+            fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.uid
     -   name: NODE_NAME
         valueFrom:
-        fieldRef:
-            apiVersion: v1
-            fieldPath: spec.nodeName
+            fieldRef:
+                apiVersion: v1
+                fieldPath: spec.nodeName
     image: registry.redhat.io/ubi8/ubi
     command: ["/bin/sh"]
     args: ["-c", "while true; do sleep 10;done"]
