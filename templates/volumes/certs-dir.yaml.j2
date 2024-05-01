@@ -1,0 +1,12 @@
+{%- from "bases/macros.j2" import get_copies_name with context -%}
+- name: {{ get_copies_name("root-ca") }}
+  containers: {{ containers | default("all") }}
+  mount:
+    path: /etc/certs/{{ get_copies_name("ca") }}
+    readOnly: true
+  definition:
+    projected:
+      defaultMode: 420
+      sources:
+      - secret:
+          name: "{{ secret_name }}"

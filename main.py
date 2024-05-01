@@ -1,7 +1,7 @@
 import yaml  # might be better to use ruamel in the future
 import argparse
 from pathlib import Path
-from jinja2 import Environment, FileSystemLoader
+from jinja2 import Environment, FileSystemLoader, pass_context, Undefined, Template
 from copy import deepcopy
 
 parser = argparse.ArgumentParser()
@@ -48,6 +48,13 @@ def remove_blank_lines(input):
     return "".join([s for s in input.splitlines(True) if s.strip(" \t\r\n")])
 env.filters["remove_blank_lines"] = remove_blank_lines
 
+@pass_context
+def eval_as_template(context, input, **vars):
+    if input == Undefined:
+        return input
+    return Template(input).render(context, **vars)
+env.filters["eval_as_template"] = eval_as_template
+
 if __DEBUG:
     print(" Templates ".center(30, "*"))
     print(env.list_templates())
@@ -57,6 +64,20 @@ results = []
 with args.input.open() as f:
     for manifest in yaml.load_all(f.read(), yaml.SafeLoader):
         for m in manifest:
+            volumes = []
+            volume_defs = m.get("volumes", [])
+            for v in volume_defs:
+                copies = v.get("copies")
+                for i in range(0, copies or 1):
+                    vol_res = env.get_template(f"volumes/{v['template']}.yaml.j2").render(index=i, **v)
+                    volumes.append(vol_res)
+            if len(volumes) > 0:
+                m["volumes"] = from_yaml("\n".join(volumes))
+                if __DEBUG:
+                    print(" Volumes ".center(30, "v"))
+                    print(to_yaml(m["volumes"]))
+                    print("v" * 30)
+
             copies = m.get("copies")
             for i in range(0, copies or 1):
                 res = env.get_template(f"{m['template']}.yaml.j2").render(index=i, **m)

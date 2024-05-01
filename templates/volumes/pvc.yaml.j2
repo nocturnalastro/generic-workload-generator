@@ -1,0 +1,8 @@
+{%- from "bases/macros.j2" import get_copies_name with context -%}
+- name: "{{ get_copies_name("data") }}"
+  containers: {{ containers | default("all") }}
+  mount:
+    path: /{{ get_copies_name("data-dir") }}
+  definition:
+    persistentVolumeClaim:
+      claimName: {{ claimNameTemplate | eval_as_template(index=index) }}

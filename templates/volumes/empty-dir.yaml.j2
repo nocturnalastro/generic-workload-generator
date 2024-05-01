@@ -1,0 +1,12 @@
+{%- from "bases/macros.j2" import get_copies_name with context -%}
+- name: {{ get_copies_name("emptyDirVolume") }}
+  containers: {{ containers | default("all") }}
+  mount:
+    path: /{{ get_copies_name("empty-dir") }}
+  definition:
+    {% if (config | default({})) | length > 0 %}
+      emptyDir: {}
+    {% else %}
+    emptyDir:
+      {{ config | to_yaml | indent(8, true) }}
+    {% endif %}
