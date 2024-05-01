@@ -5,6 +5,6 @@
 {%- block containers %}
 {{- sleep_container("sl1")  | indent(10, first=True) -}}
 {{- stress_container("st1") | indent(10, first=True) -}}
-{# {{- stress_container("st2") | indent(10, first=True) -}}
-{{- sleep_container("sl2")  | indent(10, first=True) -}} #}
+{{- stress_container("st2") | indent(10, first=True) -}}
+{{- sleep_container("sl2")  | indent(10, first=True) -}}
 {% endblock -%}

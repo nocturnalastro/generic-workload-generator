@@ -3,6 +3,8 @@ import argparse
 from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, pass_context, Undefined, Template
 from copy import deepcopy
+import ast
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-d", "--debug", action="store_true", default=False)
@@ -16,7 +18,24 @@ parser.add_argument(
     action="append",
     default=Path(__file__).parent / "templates",
 )
+parser.add_argument(
+    "-e",
+    "--extra-vars",
+    action="append",
+    default=[],
+)
+
 args = parser.parse_args()
+
+extra_vars = {}
+for ev in args.extra_vars:
+    k, raw_v = ev.split("=")
+    try:
+        v = raw_v = ast.literal_eval(raw_v)
+    except ValueError:
+        print(f"Unable to parse extra var: '{ev}'")
+        os.exit(1)
+    extra_vars[k] = v
 
 __DEBUG = args.debug
 
@@ -64,6 +83,7 @@ results = []
 with args.input.open() as f:
     for manifest in yaml.load_all(f.read(), yaml.SafeLoader):
         for m in manifest:
+            m.update(extra_vars)
             volumes = []
             volume_defs = m.get("volumes", [])
             for v in volume_defs:
