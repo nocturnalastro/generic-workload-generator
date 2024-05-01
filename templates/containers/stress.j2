@@ -2,21 +2,21 @@
 {%- from "bases/macros.j2" import volume_mounts with context -%}
 {%- macro stress_container(prefix) %}
 -
-    {% if (lookup(prefix + "_extra_vars")| default({}) | length) > 0 or lookup(prefix+ "_cpu_stress") or  lookup('prefix'+ "mem_stress") -%}
+    {% if (lookup(prefix + "_extra_vars")| default({}) | length) > 0 or lookup(prefix + "_cpu_stress") or lookup('prefix' + "mem_stress") -%}
     env:
         {% if (lookup(prefix + "_extra_vars")| default({}) | length) > 0 -%}
         {{ lookup(prefix + "_extra_vars") | from_yaml | to_yaml | indent(8) | trim }}
         {%- endif -%}
-        {% if lookup(prefix+ "_cpu_stress") %}
+        {% if lookup(prefix + "_cpu_stress") %}
         -   name: "stress_cpu"
-            value: {{ lookup(prefix+ "_cpu_stress") }}
+            value: {{ lookup(prefix + "_cpu_stress") }}
         {% endif -%}
-        {% if lookup('prefix'+ "mem_stress") %}
+        {% if lookup('prefix' + "mem_stress") %}
         -   name: "stress_vm-bytes"
-            value: {{ lookup('prefix'+ "mem_stress") }}
+            value: {{ lookup('prefix' + "mem_stress") }}
         {% endif -%}
     {%- endif %}
-    image: "ghcr.io/abraham2512/fedora-stress-ng:master"
+    image: "{{ stress_container_image | default('ghcr.io/abraham2512/fedora-stress-ng:master') }}"
     imagePullPolicy: IfNotPresent
     livenessProbe:
         httpGet:
