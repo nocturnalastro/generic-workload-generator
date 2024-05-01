@@ -1,3 +1,5 @@
+{% from "bases/macros.j2" import lookup with context %}
+{% macro sleep_container(prefix) %}
 -   env:
     -   name: TZ
         value: UTC
@@ -34,14 +36,14 @@
         periodSeconds: 10
         successThreshold: 1
         timeoutSeconds: 1
-    name: {{ container_name | default("sleeper")}}
+    name: {{ lookup(prefix + "_container_name", prefix + "_sleeper") }}
     resources:
         limits:
-            cpu: {{ limit_cpu_count | default("2") }}
-            memory: {{ limit_memory | default("512Mi") }}
+            cpu: {{ lookup(prefix +  "limit_cpu_count", "2") }}
+            memory: {{ lookup(prefix + "limit_memory", "512Mi") }}
         requests:
-            cpu: {{ requested_cpu_count | default("2") }}
-            memory: {{ requested_memory | default("512Mi") }}
+            cpu: {{ lookup(prefix + "requested_cpu_count", "2") }}
+            memory: {{ lookup(prefix + "requested_memory", "512Mi") }}
     securityContext:
         allowPrivilegeEscalation: false
         capabilities:
@@ -51,7 +53,8 @@
         privileged: false
         readOnlyRootFilesystem: true
         runAsNonRoot: true
-    {%- if (volumeMounts | default([]) | length) > 0 %}
+    {%- if (lookup(prefix + "volumeMounts", []) | from_yaml | length) > 0 %}
     volumeMounts:
-        {{ volume_mounts }}
+        {{ lookup(prefix + "volume_mounts") | to_yaml }}
     {% endif %}
+{% endmacro %}

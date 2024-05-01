@@ -11,21 +11,17 @@
     - name: "Var2"
       value: "Baz"
 
-  container_name: sleeper
-  
+  st1_limit_cpu_count: 2
+  st1_limit_memory: 2Mi
+  st1_requested_cpu_count: 1
+  st1_requested_memory: 2Mi
+  st1_cpu_stress: 1
 
-
-  s1_limit_cpu_count: 2
-  s1_limit_memory: 2Mi
-  s1_requested_cpu_count: 1
-  s1_requested_memory: 2Mi
-  s1_cpu_stress: 1
-
-  s2_limit_cpu_count: 2
-  s2_limit_memory: 2Mi
-  s2_requested_cpu_count: 1
-  s2_requested_memory: 2Mi
-  s2_cpu_stress: 2
+  st2_limit_cpu_count: 2
+  st2_limit_memory: 2Mi
+  st2_requested_cpu_count: 1
+  st2_requested_memory: 2Mi
+  st2_cpu_stress: 2
 
   labels:
     foo: bar
