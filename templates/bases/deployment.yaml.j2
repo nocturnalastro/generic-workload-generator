@@ -1,4 +1,4 @@
-{% from "bases/macros.j2" import get_copies_name with context %}
+{%- from "bases/macros.j2" import get_copies_name with context -%}
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -24,5 +24,7 @@ spec:
         {% endblock -%}
       {% if (volumes | default([]) | length) > 0 %}
       volumes:
-        {{ volumes }}
+        {% for x in volumes %}
+        - {{ x["definition"] | combine({"name": x["name"]}) | to_yaml | indent(10) }}
+        {% endfor %}
       {% endif %}

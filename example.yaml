@@ -23,5 +23,32 @@
   st2_requested_memory: 2Mi
   st2_cpu_stress: 2
 
+  volumes:
+    - name: dshm
+      containers: all
+      mount:
+        path: /dev/shm
+      definition:
+        emptyDir:
+          medium: Memory
+    - name: data
+      containers: sleep
+      mount:
+        path: /data
+      definition:
+        persistentVolumeClaim:
+          claimName: datadir-data-7
+    - name: root-ca
+      containers: stress
+      mount:
+        path: /etc/certs/ca
+        readOnly: true
+      definition:
+        projected:
+          defaultMode: 420
+          sources:
+          - secret:
+              name: s186-2
+
   labels:
     foo: bar

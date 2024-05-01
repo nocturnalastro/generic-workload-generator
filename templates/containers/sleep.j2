@@ -1,5 +1,6 @@
-{% from "bases/macros.j2" import lookup with context %}
-{% macro sleep_container(prefix) %}
+{%- from "bases/macros.j2" import lookup with context -%}
+{%- from "bases/macros.j2" import volume_mounts with context -%}
+{%- macro sleep_container(prefix) %}
 -   env:
     -   name: TZ
         value: UTC
@@ -53,8 +54,11 @@
         privileged: false
         readOnlyRootFilesystem: true
         runAsNonRoot: true
-    {%- if (lookup(prefix + "volumeMounts", []) | from_yaml | length) > 0 %}
+    {%- if (volumes | default([]) | length) > 0 -%}
+    {%- set vmounts =  volume_mounts(volumes, ["sleep", prefix + "_sleep"]) -%}
+    {%- if (vmounts | length) > 0 %}
     volumeMounts:
-        {{ lookup(prefix + "volume_mounts") | to_yaml }}
-    {% endif %}
+        {{ vmounts | indent(10) }}
+    {%- endif -%}
+    {%- endif -%}
 {% endmacro %}

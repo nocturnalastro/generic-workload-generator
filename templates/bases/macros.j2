@@ -11,3 +11,11 @@
 {%- macro lookup(name, default_value="") -%}
 {{ self._TemplateReference__context.resolve(name) | default(default_value) }}
 {%- endmacro -%}
+
+{%- macro volume_mounts(volumes, container_names) -%}
+{% for x in volumes %}
+{% if x["containers"].lower() == "all" or x["containers"] in container_names %}
+- {{ x["mount"] | combine({"name": x["name"]}) | to_yaml | indent(2) }}
+{% endif %}
+{% endfor %}
+{%- endmacro -%}
