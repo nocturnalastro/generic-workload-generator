@@ -1,4 +1,3 @@
----
 - template: deployment1
   app: "MyName"
   copies: 2
