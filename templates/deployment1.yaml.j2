@@ -1,6 +1,9 @@
 {% from "bases/macros.j2" import include_indent with context %}
+{% from "containers/stress.yaml.j2" import stress_container with context %}
+
 {% extends "bases/deployment.yaml.j2" %}
 {% block containers %}
 {{- include_indent('containers/sleep.yaml.j2', 10) -}}
-{{- include_indent('containers/stress.yaml.j2', 10) -}}
+{{- stress_container("s1") | indent(10, first=True) -}}
+{{- stress_container("s2") | indent(10, first=True) -}}
 {% endblock -%}

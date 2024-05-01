@@ -2,3 +2,17 @@
 - template: deployment1
   deployment_app: "MyName"
   copies: 2
+  s1_extra_vars:
+    - name: "Var"
+      value: "Foo"
+  s2_extra_vars:
+    - name: "Var"
+      value: "Bar"
+    - name: "Var2"
+      value: "Baz"
+  s1_cpu_limit_cpu_count: 2
+  s1_cpu_stress: 1
+  s2_cpu_limit_cpu_count: 2
+  s2_cpu_stress: 2
+  labels:
+    foo: bar

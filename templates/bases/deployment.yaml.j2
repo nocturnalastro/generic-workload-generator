@@ -6,6 +6,9 @@ metadata:
   name: {{ get_copies_name(deployment_app) }}-deployment
   labels:
     app: {{ deployment_app }}
+    {% if (labels | default({}) | length) > 0 %}
+    {{ labels | to_yaml }}
+    {% endif %}
 spec:
   replicas: 1
   selector:
