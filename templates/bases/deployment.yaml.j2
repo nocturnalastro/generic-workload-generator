@@ -1,0 +1,25 @@
+{% from "bases/macros.j2" import get_copies_name with context %}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ get_copies_name(deployment_app) }}-deployment
+  labels:
+    app: {{ deployment_app }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ deployment_app }}
+  template:
+    metadata:
+      labels:
+        app: {{ deployment_app }}
+    spec:
+      containers:
+        {%- block containers %}
+        {% endblock -%}
+      {% if (volumes | default([]) | length) > 0 %}
+      volumes:
+        {{ volumes }}
+      {% endif %}

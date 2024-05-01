@@ -1,0 +1,9 @@
+{% macro include_indent(filename, indenNumber) %}
+{%- filter indent(10, first=True) %}
+{% include 'containers/sleep.yaml.j2' -%}
+{% endfilter -%}
+{% endmacro %}
+
+{%- macro get_copies_name(name) -%}
+{% if copies and copies > 0 %}{{ name }}-{{ index }}{% else %}{{ name }}{% endif %}
+{%- endmacro -%}

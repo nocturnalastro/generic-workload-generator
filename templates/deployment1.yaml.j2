@@ -1,0 +1,5 @@
+{% from "bases/macros.j2" import include_indent with context %}
+{% extends "bases/deployment.yaml.j2" %}
+{% block containers %}
+{{- include_indent('containers/sleep.yaml.j2', 10) -}}
+{% endblock -%}
