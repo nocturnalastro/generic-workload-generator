@@ -31,7 +31,6 @@ def eval_as_template(context, input, **vars):
 
 @jinja2.pass_context
 def lookup_in_context(context: jinja2.runtime.Context, names):
-    import pdb;    pdb.set_trace()
     v = context.resolve(names[0])
     if isinstance(v, context.environment.undefined):
         return v

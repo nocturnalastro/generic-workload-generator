@@ -31,7 +31,7 @@
       copies: 3
     - template: "pvc"
       containers: stress
-      claimNameTemplate: "datadir-data-{{ index }}"
+      claim_name_template: "datadir-data-{{ index }}"
       copies: 3
     - template: "certs-dir"
       containers: sleep

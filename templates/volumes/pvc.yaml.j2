@@ -5,4 +5,4 @@
     path: /{{ get_copies_name("data-dir") }}
   definition:
     persistentVolumeClaim:
-      claimName: {{ claimNameTemplate | eval_as_template(index=index) }}
+      claimName: {{ claim_name_template | eval_as_template(index=index) }}
