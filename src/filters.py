@@ -29,6 +29,20 @@ def eval_as_template(context, input, **vars):
     return jinja2.Template(input).render(context, **vars)
 
 
+@jinja2.pass_context
+def lookup_in_context(context: jinja2.runtime.Context, names):
+    import pdb;    pdb.set_trace()
+    v = context.resolve(names[0])
+    if isinstance(v, context.environment.undefined):
+        return v
+    for name in names[1:]:
+        try:
+            v = v[name]
+        except KeyError:
+            v = context.environment.undefined(name=".".join(names))
+        if isinstance(v, context.environment.undefined):
+            break
+    return v
 
 def bind_filters(env):
     env.filters.update(
@@ -39,5 +53,6 @@ def bind_filters(env):
             "to_yaml": to_yaml,
             "remove_blank_lines": remove_blank_lines,
             "eval_as_template": eval_as_template,
+            "lookup_in_context": lookup_in_context
         }
     )

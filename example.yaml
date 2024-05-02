@@ -1,26 +1,28 @@
 - template: deployment1
   app: "MyName"
   copies: 2
-  s1_extra_vars:
-    - name: "Var"
-      value: "Foo"
-  s2_extra_vars:
-    - name: "Var"
-      value: "Bar"
-    - name: "Var2"
-      value: "Baz"
 
-  st1_limit_cpu_count: 2
-  st1_limit_memory: 2Mi
-  st1_requested_cpu_count: 1
-  st1_requested_memory: 2Mi
-  st1_cpu_stress: 1
+  st1:
+    limit_cpu_count: 2
+    limit_memory: 2Mi
+    requested_cpu_count: 1
+    requested_memory: 2Mi
+    cpu_stress: 1
+    extra_vars:
+      - name: "Var"
+        value: "Foo"
 
-  st2_limit_cpu_count: 2
-  st2_limit_memory: 2Mi
-  st2_requested_cpu_count: 1
-  st2_requested_memory: 2Mi
-  st2_cpu_stress: 2
+  st2:
+    limit_cpu_count: 2
+    limit_memory: 2Mi
+    requested_cpu_count: 1
+    requested_memory: 2Mi
+    cpu_stress: 2
+    extra_vars:
+      - name: "Var"
+        value: "Bar"
+      - name: "Var2"
+        value: "Baz"
 
   volumes:
     - template: "empty-dir"

@@ -37,14 +37,14 @@
         periodSeconds: 10
         successThreshold: 1
         timeoutSeconds: 1
-    name: {{ lookup(prefix + "_container_name", prefix + "_sleeper") }}
+    name: {{ lookup(prefix, "container_name", default_value=prefix + "_sleeper") }}
     resources:
         limits:
-            cpu: {{ lookup(prefix +  "limit_cpu_count", "2") }}
-            memory: {{ lookup(prefix + "limit_memory", "512Mi") }}
+            cpu: {{ lookup(prefix, "limit_cpu_count", default_value="2") }}
+            memory: {{ lookup(prefix, "limit_memory", default_value="512Mi") }}
         requests:
-            cpu: {{ lookup(prefix + "requested_cpu_count", "2") }}
-            memory: {{ lookup(prefix + "requested_memory", "512Mi") }}
+            cpu: {{ lookup(prefix, "requested_cpu_count", default_value="2") }}
+            memory: {{ lookup(prefix, "requested_memory", default_value="512Mi") }}
     securityContext:
         allowPrivilegeEscalation: false
         capabilities:
