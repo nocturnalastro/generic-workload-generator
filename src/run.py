@@ -88,9 +88,9 @@ def process_manifest_def(m, env):
     return result
 
 
-def run(args, debug):
+def run(args):
     global __DEBUG
-    __DEBUG = debug
+    __DEBUG = args.debug
 
     env = get_jinja_env(args)
     extra_vars = get_extra_vars(args)
