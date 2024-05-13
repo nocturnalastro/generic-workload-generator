@@ -81,13 +81,12 @@ def process_manifest_def(m, env):
 
     copies = m.get("copies")
     for i in range(0, copies or 1):
-        res = env.get_template(f"{m['template']}.yaml.j2").render(
-            index=i, **m
-        )
+        res = env.get_template(f"{m['template']}.yaml.j2").render(index=i, **m)
         res = remove_blank_lines(res)
         print_if_debug("Raw result", res, "#")
         result.append(to_yaml(from_yaml(res), 2))
     return result
+
 
 def run(args, debug):
     global __DEBUG

@@ -22,4 +22,3 @@ parser.add_argument(
     action="append",
     default=[],
 )
-

@@ -2,10 +2,12 @@ from copy import deepcopy
 import jinja2
 import yaml
 
+
 def combine(input, other):
     x = deepcopy(input)
     x.update(other)
     return x
+
 
 def filter_list(input, key, *values):
     return list(filter(lambda x: x[key] in values, input))
@@ -21,6 +23,7 @@ def to_yaml(input, indent=2):
 
 def remove_blank_lines(input):
     return "".join([s for s in input.splitlines(True) if s.strip(" \t\r\n")])
+
 
 @jinja2.pass_context
 def eval_as_template(context, input, **vars):
@@ -43,6 +46,7 @@ def lookup_in_context(context: jinja2.runtime.Context, names):
             break
     return v
 
+
 def bind_filters(env):
     env.filters.update(
         {
@@ -52,6 +56,6 @@ def bind_filters(env):
             "to_yaml": to_yaml,
             "remove_blank_lines": remove_blank_lines,
             "eval_as_template": eval_as_template,
-            "lookup_in_context": lookup_in_context
+            "lookup_in_context": lookup_in_context,
         }
     )
